@@ -1,6 +1,6 @@
 # SimplexMVP
 
-Trabalho do Sanatine - Pesquisa Operacional
+Trabalho do Sabatine - Pesquisa Operacional
 
 INTEGRANTES DO GRUPO 
 
