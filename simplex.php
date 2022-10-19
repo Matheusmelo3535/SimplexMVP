@@ -21,14 +21,14 @@ function findColunaQueEntra($tabela) {
     $elementosLinhaBaseSort = array();
     foreach ($tabela[0] as $key => $elemento) {
         if ($elemento < 0 ) {
-            $elemento *= -1;
+            $elementosLinhaBaseSort[$key] = $elemento;
         }
-        $elementosLinhaBaseSort[$key] = $elemento;
     }
     $elementosLinhaSemSort = $elementosLinhaBaseSort;
     uasort($elementosLinhaBaseSort, "sortElementosAsc");
-    $indexColunaQueEntra = array_key_first($elementosLinhaBaseSort);
-
+   
+    $indexColunaQueEntra = array_key_last($elementosLinhaBaseSort);
+    
     return $indexColunaQueEntra;
 }
 
@@ -95,3 +95,45 @@ function refazerLinhas($tabelaElinhaPivo) {
     
     return $tabela;
 }
+
+$iteracao1 = simplex($tabelaInicial);
+$iteracao2 = simplex($iteracao1);
+$iteracao3 = simplex($iteracao2);
+// $iteracao4 = simplex($iteracao3);
+// $iteracao5 = simplex($iteracao4);
+
+
+function simplex($tabelaInicial) {
+    $indexColunaQueEntra = findColunaQueEntra($tabelaInicial);
+    $elementosLinhaPivo = findLinhaPivo($tabelaInicial, $indexColunaQueEntra);
+    $novaLinhaPivo = novaLinhaPivo($tabelaInicial, $elementosLinhaPivo);
+    $tabelaRefeita = refazerLinhas($novaLinhaPivo);
+    $solucaoOtima = solucaoOtimaEncontrada($tabelaRefeita);
+   
+    // // while ($solucaoOtima == false) {
+    //     $indexColunaQueEntra = findColunaQueEntra($tabelaRefeita);
+    //     $elementosLinhaPivo = findLinhaPivo($tabelaRefeita, $indexColunaQueEntra);
+    //     $novaLinhaPivo = novaLinhaPivo($tabelaRefeita, $elementosLinhaPivo);
+    //     $tabelaRefeita = refazerLinhas($novaLinhaPivo);
+    //     $solucaoOtima = solucaoOtimaEncontrada($tabelaRefeita);
+    //     print_r($tabelaRefeita);
+        
+    // // }
+
+    return $tabelaRefeita;
+}
+
+function solucaoOtimaEncontrada($tabela) {
+    $linhaBase = $tabela[0];
+    $todosValoresPositivos = true;
+    foreach ($linhaBase as $coluna) {
+        if ($coluna < 0) {
+            $todosValoresPositivos = false;
+            return $todosValoresPositivos;
+        }
+    }
+    
+    return $todosValoresPositivos;
+}
+
+
